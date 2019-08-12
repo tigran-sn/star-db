@@ -5,11 +5,15 @@ import Spinner from "../spinner";
 import "./random-planet.css";
 
 export default class RandomPlanet extends Component {
-  constructor() {
-    super();
-
+  componentDidMount() {
+    // console.log("Did mount");
     this.updatePlanet();
+    setInterval(this.updatePlanet, 3000);
   }
+  componentWillUnmount() {
+    // console.log("Will unmount");
+  }
+
   state = {
     planet: {},
     loading: true,
@@ -27,14 +31,15 @@ export default class RandomPlanet extends Component {
       loading: false
     });
   };
-  updatePlanet() {
-    const id = Math.floor(Math.random() * 10) + 2;
+  updatePlanet = () => {
+    const id = Math.floor(Math.random() * 10) + 3;
     this.SwapiService.getPlanet(id)
       .then(this.onPlanetLoaded)
       .catch(this.onError);
-  }
+  };
 
   render() {
+    // console.log("Render");
     const { planet, loading, error } = this.state;
     const hasData = !(loading || error);
     const errorMessage = error ? <ErrorIndicator /> : null;
