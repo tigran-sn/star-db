@@ -1,5 +1,3 @@
-import { thisTypeAnnotation } from "@babel/types";
-
 export default class SwapiService {
   _apiBase = "https://swapi.co/api";
   async getResource(url) {
