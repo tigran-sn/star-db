@@ -3,58 +3,55 @@ import SwapiService from "../../services/swapi-service";
 import Spinner from "../spinner";
 import ErrorButton from "../error-button";
 
-import "./person-details.css";
+import "./item-details.css";
 
 export default class PersonDetails extends Component {
   swapiService = new SwapiService();
   state = {
-    person: null,
-    loading: true
+    item: null,
+    image: null,
+    loading: false
   };
   componentDidMount() {
-    this.updatePerson();
+    this.updateItem();
   }
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.personId !== prevProps.personId) {
-      this.updatePerson();
+    if (this.props.itemId !== prevProps.itemId) {
+      this.updateItem();
     }
   }
-  updatePerson() {
-    const { personId } = this.props;
-    if (!personId) {
+  updateItem() {
+    const { itemId, getData, getImageUrl } = this.props;
+    if (!itemId) {
       return;
     }
 
-    this.swapiService.getPerson(personId).then(person => {
-      this.setState({ person, loading: false });
+    getData(itemId).then(item => {
+      this.setState({ item, image: getImageUrl(item) });
     });
   }
   render() {
-    if (!this.state.person) {
+    if (!this.state.item) {
       return <span>Select a person from a list</span>;
     }
-    const { person, loading } = this.state;
+    const { item, loading, image } = this.state;
     const isLoading = loading ? <Spinner /> : null;
     const hasData = !loading;
-    const personDetails = hasData ? <PesonView person={person} /> : null;
+    const itemDetails = hasData ? <ItemView item={item} image={image} /> : null;
     return (
       <div className="person-details card">
         {isLoading}
-        {personDetails}
+        {itemDetails}
       </div>
     );
   }
 }
 
-const PesonView = ({ person }) => {
-  const { id, name, gender, birthYear, eyeColor } = person;
+const ItemView = ({ item, image }) => {
+  const { id, name, gender, birthYear, eyeColor } = item;
   return (
     <Fragment>
-      <img
-        className="person-image"
-        alt={name}
-        src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`}
-      />
+      <img className="person-image" alt={name} src={image} />
 
       <div className="card-body">
         <h4>{name}</h4>
