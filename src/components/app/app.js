@@ -2,8 +2,8 @@ import React from "react";
 
 import Header from "../header";
 import RandomPlanet from "../random-planet";
-import ItemList from "../item-list/item-list";
-import ItemDetails from "../item-details";
+import ItemList from "../item-list";
+import ItemDetails, { Record } from "../item-details/item-details";
 import PeoplePage from "../people-page";
 
 import "./app.css";
@@ -19,21 +19,36 @@ export default class App extends React.Component {
       getPerson,
       getStarship,
       getPersonImage,
-      getStarshipImage
+      getStarshipImage,
+      getPlanet,
+      getPlanetImage
     } = this.swapiService;
     const personDetails = (
-      <ItemDetails
-        itemId={11}
-        getData={getPerson}
-        getImageUrl={getPersonImage}
-      />
+      <ItemDetails itemId={11} getData={getPerson} getImageUrl={getPersonImage}>
+        <Record field="gender" label="Gender" />
+        <Record field="birthYear" label="Birth Year" />
+        <Record field="eyeColor" label="Eye Color" />
+      </ItemDetails>
     );
     const starshipDetails = (
       <ItemDetails
         itemId={5}
         getData={getStarship}
         getImageUrl={getStarshipImage}
-      />
+      >
+        <Record field="model" label="Model" />
+        <Record field="costInCredits" label="Cost" />
+        <Record field="passengers" label="Passengers" />
+        <Record field="length" label="Length" />
+        <Record field="cargoCapacity" label="Cargo Capacity" />
+      </ItemDetails>
+    );
+    const planetDetails = (
+      <ItemDetails itemId={10} getData={getPlanet} getImageUrl={getPlanetImage}>
+        <Record field="diameter" label="Diameter" />
+        <Record field="population" label="Population" />
+        <Record field="rotationPeriod" label="Rotation Period" />
+      </ItemDetails>
     );
 
     return (
